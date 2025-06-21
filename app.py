@@ -33,6 +33,15 @@ mbti_desc = {
     "ESFP": "The Entertainer – Fun-loving and outgoing."
 }
 
+def predict_questionnaire(ans):
+    inp = np.array(ans).reshape(1, -1)
+    preds = (model_questionnaire.predict(inp) > 0.5).astype(int)[0]
+    return mbti_from_traits(*preds)
+
+def mbti_from_traits(ie, ns, ft, jp):
+    mbti = ("I" if ie == 0 else "E") + ("N" if ns == 0 else "S") + ("F" if ft == 0 else "T") + ("J" if jp == 0 else "P")
+    return mbti
+    
 def clean_text(text):
     text = text.lower()
     return re.sub(r"http\S+|[^a-z\s]", "", text)
@@ -44,15 +53,6 @@ def predict_text(text):
     ft = int((model_text_FT.predict(vec) > 0.5).astype(int)[0][0])
     jp = int((model_text_JP.predict(vec) > 0.5).astype(int)[0][0])
     return mbti_from_traits(ie, ns, ft, jp)
-
-def predict_questionnaire(ans):
-    inp = np.array(ans).reshape(1, -1)
-    preds = (model_questionnaire.predict(inp) > 0.5).astype(int)[0]
-    return mbti_from_traits(*preds)
-
-def mbti_from_traits(ie, ns, ft, jp):
-    mbti = ("I" if ie == 0 else "E") + ("N" if ns == 0 else "S") + ("F" if ft == 0 else "T") + ("J" if jp == 0 else "P")
-    return mbti
 
 # --- Streamlit GUI ---
 st.set_page_config(page_title="MBTI Analyzer", layout="centered")
