@@ -1,1 +1,1 @@
-# MBTI-Predictor
+# MBTI-Analyzer
