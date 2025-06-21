@@ -57,18 +57,9 @@ def mbti_from_traits(ie, ns, ft, jp):
 # --- Streamlit GUI ---
 st.set_page_config(page_title="MBTI Analyzer", layout="centered")
 st.title("MBTI Personality Analyzer")
-mode = st.radio("Choose Prediction Mode:", ["Text Input", "Answer Questions"])
+mode = st.radio("Choose Prediction Mode:", ["Answer Questions" , "Text Input"])
 
-if mode == "Text Input":
-    user_input = st.text_area("Enter a paragraph about yourself:", height=200)
-    if st.button("Analyze Personality"):
-        if not user_input.strip():
-            st.warning("Please enter text first.")
-        else:
-            mbti = predict_text(user_input)
-            st.success(f"Your MBTI Type: **{mbti}**")
-            st.info(mbti_desc.get(mbti, "Type description not found."))
-elif mode == "Answer Questions":
+if mode == "Answer Questions":
     with st.form("questionnaire_form"):
         st.markdown("**Rate each statement from 1 (Strongly Disagree) to 5 (Strongly Agree):**")
         answers = []
@@ -80,3 +71,14 @@ elif mode == "Answer Questions":
             mbti = predict_questionnaire(answers)
             st.success(f"Your MBTI Type: **{mbti}**")
             st.info(mbti_desc.get(mbti, "Type description not found."))
+            
+elif mode == "Text Input":
+    user_input = st.text_area("Enter a paragraph about yourself:", height=200)
+    if st.button("Analyze Personality"):
+        if not user_input.strip():
+            st.warning("Please enter text first.")
+        else:
+            mbti = predict_text(user_input)
+            st.success(f"Your MBTI Type: **{mbti}**")
+            st.info(mbti_desc.get(mbti, "Type description not found."))
+
